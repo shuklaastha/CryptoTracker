@@ -1,0 +1,23 @@
+.info-component {
+    padding-left: 4rem; /* Add padding to the left side */
+  }
+
+.info-component h1 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  
+  .info-p {
+    margin-top: 10px;
+  }
+  
+  .read-toggle {
+    color: var(--gray);
+    cursor: pointer;
+  }
+  
+  .read-toggle:hover {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+  
