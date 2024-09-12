@@ -1,75 +1,77 @@
-import React, { useEffect, useState} from "react";
-import axios from "axios";
-import Header from '../components/Common/Header'
-import TabsComponents from '../components/Dashboard/TabsComponents'
-import Search from '../components/Dashboard/Search'
+import React, { useEffect, useState } from "react";
+import Header from '../components/Common/Header';
+import TabsComponents from '../components/Dashboard/TabsComponents';
+import Search from '../components/Dashboard/Search';
 import PaginationComponent from "../components/Dashboard/Pagination";
 import Loader from "../components/Common/Loader";
+import { get100Coins } from "../functions/get100Coins";
 
 function Dashboard() {
-    const [coins, setCoins] = useState([]);
+    const [coins, setCoins] = useState([]); // Initialize as an empty array
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [paginatedCoins, setPaginatedCoins] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    //search functionality
     const handleChange = (e) => {
         setSearch(e.target.value);
-        console.log(e.target.value);
-      };
-    
-      var filteredCoins = coins.filter(
+    };
+
+    const filteredCoins = (coins || []).filter( // Add default empty array in case coins is undefined
         (coin) =>
-          coin.name.toLowerCase().includes(search.trim().toLowerCase()) ||
-          coin.symbol.toLowerCase().includes(search.trim().toLowerCase())
-      );
+            coin.name.toLowerCase().includes(search.trim().toLowerCase()) ||
+            coin.symbol.toLowerCase().includes(search.trim().toLowerCase())
+    );
 
-      // Pagination
-      const handlePageChange = (event, value) => {
+    const handlePageChange = (event, value) => {
         setPage(value);
-        // Value = new page number
-        var initialCount = (value - 1) * 10;
-        setPaginatedCoins(coins.slice(initialCount, initialCount + 10));
-      };
-    
-    
-    useEffect(() => {
-    axios
-      .get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
-      ).then((response) => {
-        setCoins(response.data);
-        setPaginatedCoins(response.data.slice(0,10));
-        setLoading(false);
-    })    
+    };
 
-      .catch((error) => {
-            console.log(error);
-      });
-    })
-  return (
-    <div>
-      <Header />
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Search search={search} handleChange={handleChange} />
-          <TabsComponents
-            coins={search ? filteredCoins : paginatedCoins}
-            setSearch={setSearch}
-          />
-          {!search && (
-            <PaginationComponent
-              page={page}
-              handlePageChange={handlePageChange}
-            />
-          )}
-        </>
-      )}
-    </div>
-  )
+    useEffect(() => {
+        const fetchCoins = async () => {
+            setLoading(true);
+            try {
+                const response = await get100Coins(); 
+                setCoins(response || []); // Ensure coins is always an array
+            } catch (error) {
+                console.error("Error fetching coins:", error);
+                setCoins([]); // Set coins to an empty array on error
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCoins();
+    }, []);
+
+    useEffect(() => {
+        const coinsToPaginate = search ? filteredCoins : coins;
+        const initialCount = (page - 1) * 10;
+        setPaginatedCoins(coinsToPaginate.slice(initialCount, initialCount + 10));
+    }, [page, coins, search, filteredCoins]);
+
+    return (
+        <div>
+            <Header />
+            {loading ? (
+                <Loader />
+            ) : (
+                <>
+                    <Search search={search} handleChange={handleChange} />
+                    <TabsComponents
+                        coins={search ? filteredCoins : paginatedCoins}
+                        setSearch={setSearch}
+                    />
+                    {!search && (
+                        <PaginationComponent
+                            page={page}
+                            handlePageChange={handlePageChange}
+                        />
+                    )}
+                </>
+            )}
+        </div>
+    );
 }
 
-export default Dashboard
+export default Dashboard;
