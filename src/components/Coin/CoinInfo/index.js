@@ -10,7 +10,7 @@ function CoinInfo({ heading, description }) {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <div className="grey-wrapper info-component">
+    <div className="gray-wrapper info-component">
       <h1>{heading}</h1>
       <p
         dangerouslySetInnerHTML={{

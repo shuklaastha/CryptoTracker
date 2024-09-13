@@ -145,3 +145,36 @@
     font-size: 0.8rem;
     color: var(--gray);
 }
+
+.watchlist-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: var(--light-gray); 
+    padding: 0.3rem; /* Reduced padding */
+    border-radius: 50%; /* Keeps it circular */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 2.5rem; /* Explicit width and height for small circle */
+    height: 2.5rem;
+}
+  
+.watchlist-icon:hover {
+    background-color: var(--green); 
+    color: white; 
+}
+  
+.watchlist-icon-red {
+    background-color: var(--light-red);
+}
+  
+.watchlist-icon-red:hover {
+    background-color: var(--red); 
+    color: white; 
+}
+
+.watchlist-icon svg, .watchlist-icon-red svg {
+    font-size: 1.5rem; /* Star icon size */
+    transition: color 0.3s ease;
+}
+  

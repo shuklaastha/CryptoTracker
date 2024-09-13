@@ -5,6 +5,7 @@ import Search from '../components/Dashboard/Search';
 import PaginationComponent from "../components/Dashboard/Pagination";
 import Loader from "../components/Common/Loader";
 import { get100Coins } from "../functions/get100Coins";
+import Footer from '../components/Common/Footer';
 
 function Dashboard() {
     const [coins, setCoins] = useState([]); // Initialize as an empty array
@@ -70,6 +71,7 @@ function Dashboard() {
                     )}
                 </>
             )}
+            <Footer />
         </div>
     );
 }

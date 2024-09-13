@@ -10,6 +10,7 @@ import { getCoinPrice } from '../functions/getCoinPrice';
 import LineChart from '../components/Coin/LineChart';
 import { convertDate } from '../functions/convertDate';
 import SelectDays from '../components/Coin/SelectDays';
+import  Footer  from '../components/Common/Footer';
 
 export default function CoinPage() {
     const { id } = useParams();
@@ -88,6 +89,7 @@ export default function CoinPage() {
                     <div style={{ marginTop: '3rem' }}>
                         {coinData && <CoinInfo heading={coinData.name} description={coinData.desc} />}
                     </div>
+                    <Footer />
                 </>
             )}
         </div>

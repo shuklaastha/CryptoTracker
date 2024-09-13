@@ -4,8 +4,9 @@ import Button from '../../Common/Button'
 import gradient from '../../../assets/gradient.png'
 import phone from '../../../assets/phone.png'
 import { motion } from "framer-motion";
-// import { RWebShare } from "react-web-share";
-// import { toast } from "react-toastify";
+import {Link} from 'react-router-dom'
+import { RWebShare } from "react-web-share";
+import { toast } from "react-toastify";
 function MainComponent() {
     return (
         <div className='flex-info'>
@@ -39,11 +40,20 @@ function MainComponent() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.25, duration: 0.75 }}
             >
-            <a href='/dashboard'>
-            <Button text={"Dashboard"}/>
-            </a>
-            <Button text={'Share'} outlined={true}/>
-            </motion.div>
+            <Link to='/dashboard'>
+            <Button text={"Dashboard"} onClick={() => console.log('Dashboard clicked')}/>
+            </Link>
+            <RWebShare
+            data={{
+              text: "CryptoDashboard made by Astha Shukla using React JS.",
+              url: "#",
+              title: "CryptoTracker.",
+            }}
+            onClick={() => toast.info("App Shared!")}
+          >
+            <Button text={"Share"} outlined={true} />
+          </RWebShare>
+        </motion.div>
             
             </div>
             <div className='phone-components'>

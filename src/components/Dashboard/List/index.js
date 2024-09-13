@@ -1,10 +1,17 @@
 import React from 'react'
+import { useState } from 'react';
 import './styles.css'
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import TrendingDownRoundedIcon from '@mui/icons-material/TrendingDownRounded';
 import {Link} from 'react-router-dom';
 import {Tooltip} from '@mui/material';
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import { saveItemToWatchlist } from "../../../functions/saveItemToWatchlist";
+import StarIcon from "@mui/icons-material/Star";
+import { removeItemToWatchlist } from "../../../functions/removeItemToWatchlist";
 function List({coin}) {
+  const watchlist = JSON.parse(localStorage.getItem("watchlist"));
+  const [isCoinAdded, setIsCoinAdded] = useState(watchlist?.includes(coin.id));
   return (
     <Link to ={`/coin/${coin.id}`}>
     <tr className='list-row'>
@@ -58,6 +65,22 @@ function List({coin}) {
                 <p className='market-cap'>${coin.market_cap.toLocaleString()}</p>
         </td>
         </Tooltip>
+        <td
+          className={`watchlist-icon ${
+            coin.price_change_percentage_24h < 0 && "watchlist-icon-red"
+          }`}
+          onClick={(e) => {
+            if (isCoinAdded) {
+              // remove coin
+              removeItemToWatchlist(e, coin.id, setIsCoinAdded);
+            } else {
+              setIsCoinAdded(true);
+              saveItemToWatchlist(e, coin.id);
+            }
+          }}
+        >
+          {isCoinAdded ? <StarIcon /> : <StarOutlineIcon />}
+        </td>
     </tr>
     </Link>
   )

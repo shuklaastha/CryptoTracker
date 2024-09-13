@@ -1,5 +1,6 @@
 .info-component {
-    padding-left: 4rem; /* Add padding to the left side */
+    padding-left: 4rem;
+    padding-bottom: 3rem; 
   }
 
 .info-component h1 {
